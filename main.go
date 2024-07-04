@@ -1,6 +1,10 @@
 package main
 
-import "github.com/bphicke/pokedexcli/internal/pokeapi"
+import (
+	"time"
+
+	"github.com/bphicke/pokedexcli/internal/pokeapi"
+)
 
 // import (
 // 	"bufio"
@@ -8,15 +12,12 @@ import "github.com/bphicke/pokedexcli/internal/pokeapi"
 // 	"os"
 // )
 
-type config struct {
-	pokeapiClient       pokeapi.Client
-	nextLocationAreaURL *string
-	prevLocationAreaURL *string
-}
-
 func main() {
-	cfg := config{
-		pokeapiClient: pokeapi.NewClient(),
+	pokeClient := pokeapi.NewClient(5*time.Second, time.Minute*5)
+	cfg := &config{
+		caughtPokemon: map[string]pokeapi.Pokemon{},
+		pokeapiClient: pokeClient,
 	}
-	startRepl(&cfg)
+
+	startRepl(cfg)
 }
